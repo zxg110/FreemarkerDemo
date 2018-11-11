@@ -1,5 +1,8 @@
 package com.for_future.codegenerator;
 
+/**
+ * 最小单位键值对
+ */
 public class Property {
 
     private String key;

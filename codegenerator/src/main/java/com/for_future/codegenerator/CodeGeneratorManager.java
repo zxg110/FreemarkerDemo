@@ -81,18 +81,33 @@ public class CodeGeneratorManager {
         process(entity);
     }
 
+    /**
+     * 测试
+     * @param args
+     */
     public static void main(String[] args) {
         String ftlFileDir = "codegenerator/src/main/java/com/for_future/codegenerator";
         String ftlFileName = "response.ftl";
         String outDir = "codegenerator/src/main/java/com/for_future/codegenerator";
-        Entity entity = new Entity();
-        entity.setClassName("LoginResponse");
-        entity.setJavaPackageName("com.net.response");
-        entity.addProperty("String", "mobile");
-        entity.addProperty("String","identifyCode");
-        entity.addProperty("boolean","hasToken");
+        //生成request
+        Entity request = new Entity();
+        request.setJavaPackageName("codegenerator.com.net.response");
+        request.setClassName("LoginRequest");
+        request.addProperty(PropertyType.TYPE_STRING,"mobile");
+        request.addProperty(PropertyType.TYPE_STRING,"identifyCode");
+        CodeGeneratorManager.getInstance().generate(ftlFileDir, ftlFileName, outDir, request);
+        //生成response
+        Entity response = new Entity();
+        response.setClassName("LoginResponse");
+        response.setJavaPackageName("com.future.codegenerator.com.net.response");
+        response.addProperty(PropertyType.TYPE_STRING, "accessToken");
+        response.addProperty(PropertyType.TYPE_STRING,"uid");
+        response.addProperty(PropertyType.TYPE_BOOLEAN,"realNameCertificated");
+        response.addProperty(PropertyType.TYPE_BOOLEAN,"nameMobileBinded");
+        response.addProperty(PropertyType.TYPE_BOOLEAN,"registration");
+        response.addProperty(PropertyType.TYPE_STRING,"imToken");
 
-        CodeGeneratorManager.getInstance().generate(ftlFileDir, ftlFileName, outDir, entity);
+        CodeGeneratorManager.getInstance().generate(ftlFileDir, ftlFileName, outDir, response);
     }
 
 }
