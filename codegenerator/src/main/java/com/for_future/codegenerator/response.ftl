@@ -10,7 +10,6 @@ public final class ${entity.className} implements Serializable {
 <#list entity.propertyList as property>
     public ${property.key} ${property.value};
 </#list>
-
 <#list entity.propertyList as property>
 <#if property.key="boolean">
 
@@ -32,7 +31,6 @@ public final class ${entity.className} implements Serializable {
     }
      </#if>
 </#list>
-
 
     @Override
     public String toString() {

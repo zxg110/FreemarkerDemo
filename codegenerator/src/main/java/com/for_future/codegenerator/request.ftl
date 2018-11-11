@@ -10,10 +10,10 @@ public final class ${entity.className} {
 <#list entity.propertyList as property>
     public ${property.key} ${property.value};
 </#list>
+
     public ${entity.className} (<#list entity.propertyList as property>${property.key} ${property.value}<#if property_has_next>,</#if></#list>) {
     <#list entity.propertyList as property>
         this.${property.value} = ${property.value};
     </#list>
-
     }
 }
