@@ -53,6 +53,6 @@ public class SaicNetApiBean {
     }
 
     public SaicNetApiBean() {
-        
+
     }
 }

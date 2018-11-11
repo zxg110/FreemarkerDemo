@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -41,14 +40,14 @@ public class CodeGeneratorManager {
         }
     }
 
-    public void process(Entity entity) {
+    public void process(GeneratorModel model) {
         initFreeMarker();
         try {
             File outDirFile = toFileForceExists(outDir);
             HashMap<String, Object> root = new HashMap<>();
-            root.put("entity", entity);
+            root.put("model", model);
 
-            File ex = this.toJavaFilename(outDirFile, entity.getJavaPackageName(), entity.getClassName());
+            File ex = this.toJavaFilename(outDirFile, model.getJavaPackageName(), model.getClassName());
             ex.getParentFile().mkdirs();
 
             FileWriter writer = new FileWriter(ex);
@@ -74,11 +73,11 @@ public class CodeGeneratorManager {
         }
     }
 
-    public void generate(String ftlFileDir, String ftlFileName, String outDir, Entity entity) {
+    public void generate(String ftlFileDir, String ftlFileName, String outDir, GeneratorModel model) {
         this.ftlFileDir = ftlFileDir;
         this.outDir = outDir;
         this.ftlFileName = ftlFileName;
-        process(entity);
+        process(model);
     }
 
     /**
@@ -107,15 +106,17 @@ public class CodeGeneratorManager {
         response.addProperty(PropertyType.TYPE_STRING,"imToken");
         CodeGeneratorManager.getInstance().generate(ftlFileDir, "response.ftl", outDir, response);
         //生成RequestFactory
-        SaicNetApiClass saicNetApiClass = new SaicNetApiClass();
-        saicNetApiClass.setClassName("RequestFactory");
-        saicNetApiClass.setJavaPackageName("com.saic.network.model.api");
+        SaicNetApiModel saicNetApiModel = new SaicNetApiModel();
+        saicNetApiModel.setClassName("RequestFactory");
+        saicNetApiModel.setJavaPackageName("com.saic.network.model.api");
         SaicNetApiBean saicNetApiBean = new SaicNetApiBean();
         saicNetApiBean.setMethodName("phoneLogin");
+
         saicNetApiBean.setRequest(new Property("LoginRequest","loginRequest"));
         saicNetApiBean.setResponse(new Property("LoginResponse","loginResponse"));
         saicNetApiBean.setUrl("(AppUrl.LOGIN_URL");
-        saicNetApiClass.addNetApiBean(saicNetApiBean);
+        saicNetApiModel.addNetApiBean(saicNetApiBean);
+        CodeGeneratorManager.getInstance().generate(ftlFileDir, "net_api.ftl", outDir, saicNetApiModel);
     }
 
 }
