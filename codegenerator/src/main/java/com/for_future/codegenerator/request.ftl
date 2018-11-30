@@ -16,4 +16,6 @@ public final class ${model.className} {
         this.${property.value} = ${property.value};
     </#list>
     }
+
+
 }
